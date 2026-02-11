@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ChalkboardChat.BLL.DTOs.UserDtos
 {
-    internal class CreateUserDto
+    public class CreateUserDto
     {
         [Required]
         public string Username { get; set; }
