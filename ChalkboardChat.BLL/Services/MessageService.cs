@@ -1,5 +1,7 @@
 ﻿using ChalkboardChat.BLL.DTOs.MessageDtos;
 using ChalkboardChat.BLL.Interfaces;
+using ChalkboardChat.DAL.DATAs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,11 +10,12 @@ namespace ChalkboardChat.BLL.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly AppDbContext _context;
-
-        public MessageService(AppDbContext context)
+        private readonly MessageDbContext _context;
+        private readonly AuthDbContext _authContext;
+        public MessageService(MessageDbContext context, AuthDbContext authContext)
         {
             _context = context;
+            _authContext = authContext;
         }
 
         public async Task<List<MessageListDto>> GetAllMessagesAsync()
@@ -30,7 +33,7 @@ namespace ChalkboardChat.BLL.Services
         }
         public async Task<MessageDetailDto> CreateMessageAsync(CreateMessageDto dto)
         {
-            var newMessage = new Message
+            var newMessage = new DAL.Models.MessageModel
             {
                 Date = dto.Date,
                 Message = dto.Message,
