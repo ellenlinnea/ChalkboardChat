@@ -14,10 +14,16 @@ namespace ChalkboardChat.BLL.Services
             _context = context;
         }
 
-        public async Task<List<MessageModel>> GetAllMessagesAsync()
+        public async Task<List<MessageListDto>> GetAllMessagesAsync()
         {
-            return await _context.Messages.ToListAsync();
-
+            return await _context.Messages.OrderByDescending(m => m.Date)
+                .Select(m => new MessageListDto
+                {
+                    Date = m.Date,
+                    Message = m.Message,
+                    Username = m.Username
+                })
+                .ToListAsync();
 
         }
     }
