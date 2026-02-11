@@ -1,11 +1,19 @@
-using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChalkboardChat.UI.Pages
 {
     public class LoginModel : PageModel
     {
+        private readonly SignInManager<IdentityUser> _signInManager;
+
+        public LoginModel(SignInManager<IdentityUser> signInManager)
+        {
+            _signInManager = signInManager;
+        }
+
         [BindProperty]
         [Required(ErrorMessage = "Användarnamn krävs")]
         public string Username { get; set; } = string.Empty;
@@ -26,7 +34,17 @@ namespace ChalkboardChat.UI.Pages
             }
 
             // TODO: Implementera inloggningslogik här
-            return RedirectToPage("/Index");
+            var result = _signInManager.PasswordSignInAsync(Username, Password, isPersistent: false, lockoutOnFailure: false);
+
+            if (result.Result.Succeeded)
+            {
+                return RedirectToPage("/Member/Index");
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Ogiltigt användarnamn eller lösenord.");
+                return Page();
+            }
         }
     }
 }
