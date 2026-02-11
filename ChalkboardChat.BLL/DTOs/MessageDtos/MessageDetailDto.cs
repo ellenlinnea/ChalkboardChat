@@ -5,9 +5,8 @@ using System.Text;
 
 namespace ChalkboardChat.BLL.DTOs.MessageDtos
 {
-    public class CreateMessageDto
+    public class MessageDetailDto
     {
-        //public int Id { get; set; } behövs inte för att databasen skapar det åt oss
         public DateTime Date { get; set; }
 
         [Required]
