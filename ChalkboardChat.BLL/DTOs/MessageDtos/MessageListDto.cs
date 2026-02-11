@@ -7,6 +7,7 @@ namespace ChalkboardChat.BLL.DTOs.MessageDtos
 {
     public class MessageListDto
     {
+        public int Id { get; set; }
         public DateTime Date { get; set; }
 
         [Required]
