@@ -8,6 +8,6 @@ namespace ChalkboardChat.DAL.DATAs
     public interface IMessageRepository
     {
         Task<List<MessageModel>> GetAllMessagesAsync();
-        Task CreateMessageAsync(string messageText, string username);
+        Task<bool> CreateMessageAsync(string messageText, string username);
     }
 }
