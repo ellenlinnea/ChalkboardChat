@@ -38,7 +38,7 @@ namespace ChalkboardChat.UI.Pages.Member
 
             if (result)
             {
-                
+                TempData["SuccessMessage"] = "Meddelandet har skapats!";
             }
             return RedirectToPage();
         }
