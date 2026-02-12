@@ -27,19 +27,27 @@ namespace ChalkboardChat.DAL.DATAs
         }
 
         //METOD: Skapa meddelande
-        public async Task CreateMessageAsync(string messageText, string username)
+        public async Task<bool> CreateMessageAsync(string messageText, string username)
         {
-            //Lägger in inputs, användarnamn samt aktuellt datum när meddelande skrivs
-            var message = new MessageModel
+            try
             {
-                Message = messageText,
-                Username = username,
-                Date = DateTime.Now
-            };
-            //Lägger till meddelandet i databasen
-            await _messageDbContext.Messages.AddAsync(message);
-            //Sparar meddelandet
-            await _messageDbContext.SaveChangesAsync();
+                //Lägger in inputs, användarnamn samt aktuellt datum när meddelande skrivs
+                var message = new MessageModel
+                {
+                    Message = messageText,
+                    Username = username,
+                    Date = DateTime.Now
+                };
+                //Lägger till meddelandet i databasen
+                await _messageDbContext.Messages.AddAsync(message);
+                //Sparar meddelandet
+                await _messageDbContext.SaveChangesAsync();
+                return true; //lyckades :)
+            }
+            catch (Exception)
+            {
+                return false; // Misslyckades - något gick fel
+            }
         }
     }
 }
