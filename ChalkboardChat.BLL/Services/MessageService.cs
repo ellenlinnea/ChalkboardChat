@@ -11,11 +11,11 @@ namespace ChalkboardChat.BLL.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly MessageRepository _messageRepo;
+        private readonly IMessageRepository _messageRepo;
         private readonly AuthDbContext _authContext;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public MessageService(MessageRepository messageRepository, AuthDbContext authContext, SignInManager<IdentityUser> signInManager)
+        public MessageService(IMessageRepository messageRepository, AuthDbContext authContext, SignInManager<IdentityUser> signInManager)
         {
             _messageRepo = messageRepository;
             _authContext = authContext;

@@ -1,3 +1,5 @@
+using ChalkboardChat.BLL.Interfaces;
+using ChalkboardChat.BLL.Services;
 using ChalkboardChat.DAL.DATAs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -21,6 +23,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 }).AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AuthDbContext>();
 //Sista säger: spara allt i vår databas IdentityDbContext
+
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 builder.Services.AddAuthorization(options =>
 {

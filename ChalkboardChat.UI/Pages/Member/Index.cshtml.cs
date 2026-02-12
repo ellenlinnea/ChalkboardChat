@@ -10,9 +10,9 @@ namespace ChalkboardChat.UI.Pages.Member
 {
     public class MessagesModel : PageModel
     {
-        private readonly MessageService _messageService;
+        private readonly IMessageService _messageService;
 
-        public MessagesModel(MessageService messageService)
+        public MessagesModel(IMessageService messageService)
         {
             _messageService = messageService;
         }
