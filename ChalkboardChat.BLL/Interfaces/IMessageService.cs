@@ -9,10 +9,10 @@ namespace ChalkboardChat.BLL.Interfaces
     public interface IMessageService
     {
         //GET: metod att visa alla meddelande i listan:
-        Task<List<MessageListDto>> GetAllMessagesAsync();
+        Task<List<MessageListDto>> GetAllMessages();
 
         //POST: create message
-        Task<MessageDetailDto> CreateMessageAsync(CreateMessageDto dto);
+        Task<MessageDetailDto> CreateMessage(string message);
     }
 }
 

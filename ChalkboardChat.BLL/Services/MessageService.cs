@@ -35,19 +35,22 @@ namespace ChalkboardChat.BLL.Services
             //    })
             //    .ToListAsync();
 
-            var messages = _messageRepo.GetAllMessagesAsync();
-            messages = new MessageListDto
+            var messagesDto = _messageRepo.GetAllMessagesAsync();
+            
+
+            if (messagesDto == null)
+            {
+                throw new Exception("No messages found.");
+            }
+            
+            var messages = new MessageListDto
             {
                 Id = messages.Id,
                 Date = messages.Date,
                 Message = messages.Message,
                 Username = messages.Username
             };
-            if (messages == null)
-            {
-                throw new Exception("No messages found.");
-            }
-            return messages;
+
 
         }
         public Task<MessageDetailDto> CreateMessage(string message)
@@ -74,5 +77,6 @@ namespace ChalkboardChat.BLL.Services
             //    Username = newMessage.Username
             //};
         }
+
     }
 }
