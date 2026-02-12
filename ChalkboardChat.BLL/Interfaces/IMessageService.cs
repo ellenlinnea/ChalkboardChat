@@ -12,7 +12,7 @@ namespace ChalkboardChat.BLL.Interfaces
         Task<List<MessageListDto>> GetAllMessages();
 
         //POST: create message
-        Task<MessageDetailDto> CreateMessage(string message);
+        Task<bool> CreateMessage(string message, bool result);
     }
 }
 
