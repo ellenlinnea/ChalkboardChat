@@ -55,9 +55,8 @@ namespace ChalkboardChat.BLL.Services
 
 
         }
-        public async Task<bool> CreateMessage(string message, bool result)
+        public async Task<bool> CreateMessage(string message)
         {
-            result = false;
             var signedInUser = await _signInManager.UserManager.GetUserAsync(_signInManager.Context.User);
 
             if (signedInUser == null)
@@ -66,7 +65,7 @@ namespace ChalkboardChat.BLL.Services
             }
             var username = signedInUser.UserName;
 
-            result = await _messageRepo.CreateMessageAsync(message, username);
+            bool result = await _messageRepo.CreateMessageAsync(message, username);
 
             return result;
 

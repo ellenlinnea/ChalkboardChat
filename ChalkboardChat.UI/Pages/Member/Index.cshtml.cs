@@ -1,5 +1,6 @@
 using ChalkboardChat.BLL.DTOs.MessageDtos;
 using ChalkboardChat.BLL.Interfaces;
+using ChalkboardChat.BLL.Services;
 using ChalkboardChat.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,9 +10,9 @@ namespace ChalkboardChat.UI.Pages.Member
 {
     public class MessagesModel : PageModel
     {
-        private readonly IMessageService _messageService;
+        private readonly MessageService _messageService;
 
-        public MessagesModel(IMessageService messageService)
+        public MessagesModel(MessageService messageService)
         {
             _messageService = messageService;
         }
@@ -21,21 +22,24 @@ namespace ChalkboardChat.UI.Pages.Member
 
         public List<MessageListDto> Messages { get; set; }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-            // Hämtar alla meddelande vid laddning av sidan
-            Messages = _messageService.GetAllMessages();
+            Messages = await _messageService.GetAllMessages();
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (string.IsNullOrWhiteSpace(NewMessage))
             {
                 return Page();
             }
 
-            -_messageService.CreateMessage(NewMessage)
+            bool result = await _messageService.CreateMessage(NewMessage);
 
+            if (result)
+            {
+                TempData["SuccessMessage"] = "Meddelandet har skapats!";
+            }
             return RedirectToPage();
         }
     }
