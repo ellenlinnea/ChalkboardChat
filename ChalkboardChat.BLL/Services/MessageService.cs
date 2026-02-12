@@ -23,7 +23,7 @@ namespace ChalkboardChat.BLL.Services
 
         }
 
-        public Task<List<MessageListDto>> GetAllMessages()
+        public async Task<List<MessageListDto>> GetAllMessages()
         {
             //return await _messageRepo.Messages.OrderByDescending(m => m.Date)
             //    .Select(m => new MessageListDto
@@ -35,31 +35,47 @@ namespace ChalkboardChat.BLL.Services
             //    })
             //    .ToListAsync();
 
-            var messagesDto = _messageRepo.GetAllMessagesAsync();
+            var messages = await _messageRepo.GetAllMessagesAsync();
             
 
-            if (messagesDto == null)
+            if (messages == null)
             {
                 throw new Exception("No messages found.");
             }
             
-            var messages = new MessageListDto
+            var messagesDto = messages.Select(m => new MessageListDto
             {
-                Id = messages.Id,
-                Date = messages.Date,
-                Message = messages.Message,
-                Username = messages.Username
-            };
+                Id = m.Id,
+                Date = m.Date,
+                Message = m.Message,
+                Username = m.Username
+            }).ToList();
+            
+            return messagesDto;
 
 
         }
-        public Task<MessageDetailDto> CreateMessage(string message)
+        public async Task<bool> CreateMessage(string message, bool result)
         {
-            var username = 
+            result = false;
+            var signedInUser = await _signInManager.UserManager.GetUserAsync(_signInManager.Context.User);
 
-            var newMessage = _messageRepo.CreateMessageAsync(username);
-            
+            if (signedInUser == null)
+            {
+                throw new Exception("User must be signed in to create a message.");
+            }
+            var username = signedInUser.UserName;
 
+            result = await _messageRepo.CreateMessageAsync(message, username);
+
+            return result;
+
+            //return new MessageDetailDto
+            //{
+            //    Date = DateTime.UtcNow,
+            //    Message = message,
+            //    Username = username
+            //};
 
             //var newMessage = new DAL.Models.MessageModel
             //{
