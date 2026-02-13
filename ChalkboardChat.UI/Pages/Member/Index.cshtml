@@ -5,19 +5,21 @@
 }
 
 <h1>Chalkboard Chat</h1>
+<a asp-page="/Member/UpdateDetails" style="margin-bottom: 10px; display: inline-block; padding: 8px 20px; font-size: 14px; text-decoration: none; background-color: #007bff; color: white; border-radius: 4px;">Uppdatera uppgifter</a>
 <form method="post">
     <textarea asp-for="NewMessage" rows="5" style="width: 100%; max-width: 600px; padding: 10px; font-size: 16px;" placeholder="Skriv ett meddelande..."></textarea>
     <br />
     <button type="submit" style="margin-top: 10px; padding: 10px 30px; font-size: 16px;">Skicka meddelande</button>
 </form>
 
+@*If - för att kolla bool och skriva ut meddelande om skpapa-meddelande lyckats*@
 @if (TempData["SuccessMessage"] != null)
 {
     <div style="background:#4CAF50; color:white; padding:15px; border-radius:8px; margin:10px 0;">
         @TempData["SuccessMessage"]
     </div>
 }
-
+@*Visar alla meddelande - onGet*@
 <div style="margin-top: 20px; max-width: 600px;">
     @foreach (var message in Model.Messages)
     {
