@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+//Lägger till våra DbContext i systemet, så att vi kan använda dem i resten av applikationen
 builder.Services.AddDbContext<MessageDbContext>(Options =>
 Options.UseSqlServer(builder.Configuration.GetConnectionString("MessageConnection")));
 
@@ -20,10 +21,17 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnection")
 //AddDefaultIdentity lägger till all standardfuntionalitet för identity, som inloggning, registrering, lösenordshantering osv
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
+    options.Password.RequiredLength = 3;
+    options.Password.RequireDigit = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredUniqueChars = 0;
 }).AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AuthDbContext>();
 //Sista säger: spara allt i vår databas IdentityDbContext
 
+//Lägger till våra egna services och repositories i systemet, så att vi kan använda dem i resten av applikationen
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 
@@ -36,14 +44,14 @@ builder.Services.AddAuthorization(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Login"; //Om användaren inte är inloggad, skicka dem till /Login-sidan
-    options.AccessDeniedPath = "/AccessDenied"; //Om användaren inte har rätt behörighet, skicka dem till /AccessDenied-sidan
+    options.AccessDeniedPath = "/Error"; //Om användaren inte har rätt behörighet, skicka dem till /AccessDenied-sidan
 });
 
 
 builder.Services.AddRazorPages(options =>
 {
     options.Conventions.AuthorizeFolder("/Member"); //Krav på inloggning för alla sidor i Member-mappen
-    options.Conventions.AuthorizeFolder("/Admin", "AdminOnly"); //Krav på inloggning och Admin-roll för alla sidor i Admin-mappen
+    //options.Conventions.AuthorizeFolder("/Admin", "AdminOnly"); //Krav på inloggning och Admin-roll för alla sidor i Admin-mappen
 });
 
 

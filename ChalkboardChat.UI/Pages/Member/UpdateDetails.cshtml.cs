@@ -56,10 +56,11 @@ namespace ChalkboardChat.UI.Pages.Member
             return Page();
         }
 
+
         // Körs när "Spara ändringar"-knappen klickas (POST-request)
         public async Task<IActionResult> OnPostUpdateAsync()
         {
-            // Kolla att alla Required-fält är ifyllda
+            //Kontrollerar alla som är required och att NewPassword och ConfirmNewPassword matchar
             if (!ModelState.IsValid)
             {
                 return Page();
@@ -91,6 +92,16 @@ namespace ChalkboardChat.UI.Pages.Member
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
+                    return Page();
+                }
+            }
+
+            // Kolla att båda lösenordsfälten är ifyllda om man vill byta lösenord
+            if (!string.IsNullOrEmpty(NewPassword) || !string.IsNullOrEmpty(ConfirmNewPassword))
+            {
+                if (NewPassword != ConfirmNewPassword)
+                {
+                    ModelState.AddModelError("ConfirmNewPassword", "Lösenorden matchar inte.");
                     return Page();
                 }
             }

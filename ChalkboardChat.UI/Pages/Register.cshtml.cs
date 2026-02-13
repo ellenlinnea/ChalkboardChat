@@ -22,7 +22,6 @@ namespace ChalkboardChat.UI.Pages
 
         [BindProperty]
         [Required(ErrorMessage = "Lösenord krävs")]
-        [MinLength(6, ErrorMessage = "Lösenordet måste vara minst 6 tecken")]
         public string Password { get; set; } = string.Empty;
 
         [BindProperty]

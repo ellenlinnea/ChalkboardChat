@@ -8,6 +8,7 @@
     <div class="col-md-4">
         <h2>Uppdatera uppgifter</h2>
 
+        @*If - för ev meddelande om lyckats byta användarnmamn eller lösenord*@
         @if (!string.IsNullOrEmpty(Model.SuccessMessage))
         {
             <div class="alert alert-success">@Model.SuccessMessage</div>
